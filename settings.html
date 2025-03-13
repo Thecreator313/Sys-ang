@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Advanced Settings & Live Preview</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* New styles for the live preview container to keep a 1:1 ratio */
+    .poster-container {
+      width: 100%;
+      max-width: 400px; /* Adjust max-width as needed */
+      margin: 20px auto;
+      position: relative;
+      aspect-ratio: 1 / 1;
+      border: 1px solid #ccc;
+    }
+    #previewCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Advanced Settings with Live Preview</h1>
+    <form id="settingsForm">
+      <!-- You can remove this if the background is fixed -->
+      <!--
+      <label for="backgroundUploadSettings">Upload Background Image for Preview:</label>
+      <input type="file" id="backgroundUploadSettings" accept="image/*" />
+      -->
+
+      <!-- Live preview container -->
+      <div class="poster-container">
+        <canvas id="previewCanvas" width="800" height="800"></canvas>
+      </div>
+
+      <h2>Number Settings</h2>
+      <label for="numberX">Number X Position:</label>
+      <input type="number" id="numberX" value="90" />
+      <label for="numberY">Number Y Position:</label>
+      <input type="number" id="numberY" value="300" />
+      <label for="numberFontSize">Number Font Size (px):</label>
+      <input type="number" id="numberFontSize" value="50" />
+
+      <h2>Place Name Settings</h2>
+      <label for="textX">Place Name X Position:</label>
+      <input type="number" id="textX" value="75" />
+      <label for="textY">Place Name Y Position:</label>
+      <input type="number" id="textY" value="488" />
+      <label for="textFontSize">Place Name Font Size (px):</label>
+      <input type="number" id="textFontSize" value="40" />
+
+      <button type="button" id="saveSettingsBtn">Save Settings</button>
+    </form>
+    <a href="index.html">Back to Poster Generator</a>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const previewCanvas = document.getElementById('previewCanvas');
+      const ctx = previewCanvas.getContext('2d');
+
+      // Form elements
+      const numberXInput = document.getElementById('numberX');
+      const numberYInput = document.getElementById('numberY');
+      const numberFontSizeInput = document.getElementById('numberFontSize');
+      const textXInput = document.getElementById('textX');
+      const textYInput = document.getElementById('textY');
+      const textFontSizeInput = document.getElementById('textFontSize');
+
+      // Default preview texts
+      const previewNumber = "1";
+      const previewPlaceName = "Place Name";
+
+      // Use the fixed background image
+      const backgroundImage = new Image();
+      backgroundImage.src = 'assets/images/background.jpg';
+      backgroundImage.onload = function () {
+        drawPreview();
+      };
+
+      // Function to draw the preview on the canvas
+      function drawPreview() {
+        // Clear canvas
+        ctx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+
+        // Draw the fixed background image scaled to the canvas size
+        ctx.drawImage(backgroundImage, 0, 0, previewCanvas.width, previewCanvas.height);
+
+        // Draw the number using the custom font "NumberFont"
+        ctx.font = `${numberFontSizeInput.value}px NumberFont`;
+        ctx.fillStyle = 'rgba(0,116,12,1.0)';
+        ctx.fillText(previewNumber, parseInt(numberXInput.value, 10), parseInt(numberYInput.value, 10));
+
+        // Draw the place name using the custom font "PlaceFont"
+        ctx.font = `${textFontSizeInput.value}px PlaceFont`;
+        ctx.fillStyle = 'rgba(0,116,12,1.0)';
+        ctx.fillText(previewPlaceName, parseInt(textXInput.value, 10), parseInt(textYInput.value, 10));
+      }
+
+      // Listen for changes to update the preview live
+      [numberXInput, numberYInput, numberFontSizeInput, textXInput, textYInput, textFontSizeInput].forEach(input => {
+        input.addEventListener('input', drawPreview);
+      });
+
+      // Initial preview draw after fonts and image load
+      drawPreview();
+
+      // Save settings to localStorage
+      document.getElementById('saveSettingsBtn').addEventListener('click', function () {
+        const settings = {
+          numberX: parseInt(numberXInput.value, 10),
+          numberY: parseInt(numberYInput.value, 10),
+          numberFontSize: parseInt(numberFontSizeInput.value, 10),
+          textX: parseInt(textXInput.value, 10),
+          textY: parseInt(textYInput.value, 10),
+          textFontSize: parseInt(textFontSizeInput.value, 10)
+        };
+        localStorage.setItem('posterSettings', JSON.stringify(settings));
+        alert('Settings saved successfully!');
+      });
+    });
+  </script>
+</body>
+</html>

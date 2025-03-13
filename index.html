@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Poster Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>SYS Ang</h1>
+    <form id="posterForm">
+      <!-- Fixed background image, so no upload option here -->
+      <!--
+      <label for="backgroundUpload">Upload Background Image:</label>
+      <input type="file" id="backgroundUpload" accept="image/*">
+      -->
+      
+      <label for="posterNumber">Enter Number:</label>
+      <input type="number" id="posterNumber" max="9" min="0" required>
+      
+      <label for="placeName">Enter Place Name:</label>
+      <input type="text" id="placeName" required>
+      
+      <button type="button" id="generateBtn">Generate Poster</button>
+    </form>
+    
+    <div class="poster-container">
+      <canvas id="posterCanvas" width="800" height="800"></canvas>
+    </div>
+    
+    <div class="actions">
+      <button id="downloadBtn" style="display:none;">Download Image</button>
+      <a href="settings.html" id="advancedSettingsBtn">Advanced Settings</a>
+    </div>
+  </div>
+  
+  <script src="script.js"></script>
+</body>
+</html>
